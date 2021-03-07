@@ -1,12 +1,28 @@
-# This is just an example to get you started. You may wish to put all of your
-# tests into a single file, or separate them into multiple `test1`, `test2`
-# etc. files (better names are recommended, just make sure the name starts with
-# the letter 't').
-#
-# To run these tests, simply execute `nimble test`.
-
 import unittest
 
+type
+  TestEnum = enum
+    a = "one"
+    b = "two"
+    c = "three"
+    d = "four"
+
 import nimConsoleCombo
-test "can add":
-  check add(5, 5) == 10
+test "seq[string]":
+  let
+    vals = @["one", "two", "three", "four"]
+    res = vals.selectCombo("文字列配列から選択", 2)
+  echo "選択された値: ", res
+
+test "seq[tuple]":
+  let
+    vals = @[("t", true), ("f", false)]
+    res = vals.selectCombo("タプルから選択", 2)
+  echo "選択された値: ", res
+
+test "enum":
+  try:
+    let res = TestEnum.selectCombo("enumから選択", -1, false)
+    echo "選択された値: ", res
+  except NotSelected:
+    echo "未選択"
